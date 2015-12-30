@@ -16,7 +16,7 @@ defmodule MuVault.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :httpotion]]
   end
 
   # Dependencies can be Hex packages:
@@ -30,7 +30,11 @@ defmodule MuVault.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [ { :ex_doc, github: "elixir-lang/ex_doc" },
-      { :credo, "~> 0.2", only: [:dev, :test] }
+      { :floki, "~> 0.7" },
+      { :ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2" },
+      { :httpotion, "~> 2.1.0" },
+
+      { :credo, "~> 0.2", only: [:dev, :test] },
     ]
   end
 

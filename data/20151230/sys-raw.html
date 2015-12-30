@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The `/sys/raw` endpoint is access the raw underlying store in Vault.">
+
+    <link rel="shortcut icon" href="/assets/images/favicon.png">
+
+    <title>HTTP API: /sys/raw - Vault by HashiCorp</title>
+
+    <link href="/assets/stylesheets/application-46ec426f.css" rel="stylesheet"/>
+
+    <!--[if lt IE 9]><script src="/assets/javascripts/html5shiv-62fced3a.js"></script><script src="/assets/javascripts/respond.min-88c91176.js"></script><![endif]-->
+
+    
+  </head>
+
+  <body id="page-HTTP API: /sys/raw" class="page-HTTP API: /sys/raw layout-http page-sub">
+
+<div id="header" class="navigation navbar-static-top">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-offset-1 col-md-10 col-xs-12">
+        <div class="navbar-header">
+          <div class="navbar-brand">
+            <a class="logo" href="/">Vault</a>
+            <a class="by-hashicorp" href="https://hashicorp.com/"><span class="svg-wrap">by</span><svg class="svg-by" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="-1337.4 1130.1 73.8 16.1" xml:space="preserve" enable-background="new -1337.4 1130.1 73.8 16.1">
+  <g>
+    <path d="M-1329.6 1142.4v-4.9h-4.3v4.9h-2.2v-11.6h2.2v4.8h4.3v-4.8h2.2v11.6H-1329.6z"/>
+    <path d="M-1318.8 1142.4h-1.7l-0.2-0.6c-0.8 0.5-1.7 0.8-2.5 0.8 -1.6 0-2.2-1.1-2.2-2.5 0-1.7 0.8-2.4 2.5-2.4h2v-0.9c0-0.9-0.3-1.3-1.6-1.3 -0.8 0-1.6 0.1-2.4 0.3l-0.3-1.6c0.8-0.2 2-0.4 2.9-0.4 2.7 0 3.5 0.9 3.5 3.1V1142.4zM-1321 1139.2h-1.6c-0.7 0-0.9 0.2-0.9 0.8 0 0.6 0.2 0.9 0.9 0.9 0.6 0 1.2-0.2 1.6-0.4V1139.2z"/>
+    <path d="M-1314.2 1142.6c-0.9 0-2.1-0.2-2.9-0.5l0.3-1.6c0.7 0.2 1.7 0.4 2.5 0.4 0.9 0 1.1-0.2 1.1-0.9 0-0.5-0.1-0.8-1.5-1.1 -2.1-0.5-2.3-1-2.3-2.7s0.8-2.5 3.2-2.5c0.8 0 1.8 0.1 2.5 0.3l-0.2 1.7c-0.6-0.1-1.7-0.2-2.3-0.2 -0.9 0-1.1 0.2-1.1 0.7 0 0.7 0.1 0.7 1.2 1 2.4 0.6 2.6 0.9 2.6 2.7C-1311.1 1141.6-1311.6 1142.6-1314.2 1142.6z"/>
+    <path d="M-1304.3 1142.4v-5.9c0-0.5-0.2-0.7-0.7-0.7s-1.4 0.3-2.2 0.7v5.9h-2.1v-12l2.1-0.3v4.4c0.9-0.5 2.2-0.8 3.1-0.8 1.4 0 1.9 1 1.9 2.5v6.2H-1304.3L-1304.3 1142.4z"/>
+    <path d="M-1300.1 1132.7v-2.5h2.1v2.5H-1300.1zM-1300.1 1142.4v-8.5h2.1v8.5H-1300.1z"/>
+    <path d="M-1296 1134c0-2.1 1.2-3.4 4.1-3.4 1.1 0 2.2 0.1 3.2 0.4l-0.2 1.9c-0.9-0.2-2-0.3-2.8-0.3 -1.5 0-2 0.5-2 1.8v4.5c0 1.2 0.5 1.8 2 1.8 0.8 0 1.9-0.1 2.8-0.3l0.2 1.9c-1 0.2-2.1 0.4-3.2 0.4 -2.9 0-4.1-1.2-4.1-3.4V1134z"/>
+    <path d="M-1283.8 1142.6c-2.9 0-3.7-1.6-3.7-3.3v-2.1c0-1.7 0.8-3.4 3.7-3.4s3.7 1.6 3.7 3.4v2.1C-1280.1 1141-1280.9 1142.6-1283.8 1142.6zM-1283.8 1135.6c-1.1 0-1.6 0.5-1.6 1.5v2.3c0 1 0.4 1.5 1.6 1.5 1.1 0 1.6-0.5 1.6-1.5v-2.4C-1282.2 1136.1-1282.7 1135.6-1283.8 1135.6z"/>
+    <path d="M-1273.9 1135.7c-0.8 0.4-1.5 0.8-2.3 1.2v5.5h-2.1v-8.5h1.8l0.1 0.9c0.5-0.3 1.5-0.9 2.2-1.1L-1273.9 1135.7z"/>
+    <path d="M-1265.6 1139.6c0 1.9-0.8 3-2.8 3 -0.8 0-1.6-0.1-2.3-0.2v3.5l-2.1 0.3V1134h1.7l0.2 0.7c0.8-0.5 1.6-0.9 2.7-0.9 1.7 0 2.6 1 2.6 2.9V1139.6L-1265.6 1139.6zM-1270.6 1140.5c0.6 0.1 1.3 0.2 1.9 0.2 0.8 0 1.1-0.4 1.1-1.1v-3c0-0.7-0.3-1.1-1-1.1 -0.7 0-1.4 0.3-1.9 0.8L-1270.6 1140.5 -1270.6 1140.5z"/>
+  </g>
+  <g class="svg-bg-line">
+    <rect x="-1268" y="1145" width="4.3" height="1"/>
+    <rect x="-1338" y="1145" width="63" height="1"/>
+  </g>
+</svg>
+<svg class="svg-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Isolation_Mode" x="0px" y="0px" viewBox="-344 273 29.4 32" xml:space="preserve" enable-background="new -344 273 29.4 32">
+  <g>
+    <polygon points="-326.2 296.7 -321.4 294.1 -321.4 275.8 -326.2 273 -326.2 286.6 -332.4 286.6 -332.4 281.3 -337.3 283.9 -337.3 302.2 -332.4 305 -332.4 291.4 -326.2 291.4 "/>
+    <polygon points="-319.1 277.1 -319.1 295.6 -326.2 299.5 -326.2 305 -314.6 298.3 -314.6 279.7 "/>
+    <polygon points="-332.4 273 -344 279.7 -344 298.3 -339.5 300.9 -339.5 282.4 -332.4 278.6 "/>
+  </g>
+</svg>
+Hashicorp</a>
+          </div>
+          <button class="navbar-toggle" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="buttons hidden-xs">
+          <nav class="navigation-links" role="navigation">
+            <ul class="external-links nav navbar-nav navbar-right">
+              <li class="first download">
+                <a href="/downloads.html"><svg id="svg-download" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 28 28" xml:space="preserve" enable-background="new 0 0 28 28">
+  <path d="M28 0H0v28h28V0zM13.8 22.9L7 17.3l2-2.4 3.2 2.6V7h3.2v10.5l3.2-2.6 2 2.4L13.8 22.9z"/>
+</svg>
+Download</a>
+              </li>
+              <li class="github">
+                <a href="https://github.com/hashicorp/vault"><svg id="svg-download" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 28 28" xml:space="preserve" enable-background="new 0 0 28 28">
+  <path d="M28 0H0v28h11.4c0 0 0-1.3 0-2.4C7.7 26.4 7 23.9 7 23.9 6.4 22.4 5.5 22 5.5 22c-1.2-0.8 0.1-0.8 0.1-0.8 1.3 0.1 2 1.4 2 1.4 1.2 2 3 1.4 3.8 1.1 0.1-0.8 0.5-1.4 0.9-1.8 -2.9-0.3-6-1.5-6-6.5 0-1.4 0.5-2.6 1.3-3.5C7.5 11.5 7 10.2 7.8 8.4c0 0 1.1-0.4 3.6 1.3 1-0.3 2.2-0.4 3.3-0.4 1.1 0 2.2 0.2 3.3 0.4 2.5-1.7 3.6-1.3 3.6-1.3 0.7 1.8 0.3 3.1 0.1 3.5 0.8 0.9 1.3 2.1 1.3 3.5 0 5-3.1 6.1-6 6.5 0.5 0.4 0.9 1.2 0.9 2.4 0 1.8 0 3.7 0 3.7H28V0z"/>
+</svg>
+GitHub</a>
+              </li>
+            </ul>
+            <ul class="main-links nav navbar-nav navbar-right">
+              <li class="first li-under"><a href="/intro/index.html">Intro</a></li>
+              <li class="li-under"><a href="/docs/index.html">Docs</a></li>
+              <li class="li-under"><a href="/community.html">Community</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="sidebar-overlay"></div>
+
+
+<aside id="sidebar" class="sidebar sidebar-default sidebar-fixed-right" role="navigation">
+    
+    <div class="sidebar-header header-cover">
+        
+        <div class="sidebar-image">
+            <img src="/assets/images/logo-icon-large@2x-6e2aadd2.png" width="112px" height="72px">
+        </div>
+    </div>
+
+    <ul class="main nav sidebar-nav">
+        <li class="first"><a href="/intro/index.html">Intro</a></li>
+        <li class=""><a href="/docs/index.html">Docs</a></li>
+        <li class=""><a href="/community.html">Community</a></li>
+    </ul>
+    <div class="divider"></div>
+    
+    <ul class="external nav sidebar-nav">
+        <li class="first"><a class="" href="/downloads.html"><svg id="svg-download" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 28 28" xml:space="preserve" enable-background="new 0 0 28 28">
+  <path d="M28 0H0v28h28V0zM13.8 22.9L7 17.3l2-2.4 3.2 2.6V7h3.2v10.5l3.2-2.6 2 2.4L13.8 22.9z"/>
+</svg>
+Download</a></li>
+        <li class=""><a class="" href="https://github.com/hashicorp/vault"><svg id="svg-download" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 28 28" xml:space="preserve" enable-background="new 0 0 28 28">
+  <path d="M28 0H0v28h11.4c0 0 0-1.3 0-2.4C7.7 26.4 7 23.9 7 23.9 6.4 22.4 5.5 22 5.5 22c-1.2-0.8 0.1-0.8 0.1-0.8 1.3 0.1 2 1.4 2 1.4 1.2 2 3 1.4 3.8 1.1 0.1-0.8 0.5-1.4 0.9-1.8 -2.9-0.3-6-1.5-6-6.5 0-1.4 0.5-2.6 1.3-3.5C7.5 11.5 7 10.2 7.8 8.4c0 0 1.1-0.4 3.6 1.3 1-0.3 2.2-0.4 3.3-0.4 1.1 0 2.2 0.2 3.3 0.4 2.5-1.7 3.6-1.3 3.6-1.3 0.7 1.8 0.3 3.1 0.1 3.5 0.8 0.9 1.3 2.1 1.3 3.5 0 5-3.1 6.1-6 6.5 0.5 0.4 0.9 1.2 0.9 2.4 0 1.8 0 3.7 0 3.7H28V0z"/>
+</svg>
+GitHub</a></li>
+    </ul>
+</aside>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-2 col-sm-3 col-xs-12">
+					<div class="docs-sidebar hidden-print affix-top" role="complementary">
+			<ul class="nav docs-sidenav">
+				<li>
+					<a href="/docs/index.html">Documentation Home</a>
+				</li>
+
+				<hr>
+
+				<li>
+					<a href="/docs/http/index.html">Overview</a>
+				</li>
+
+				<li>
+					<a href="/docs/http/libraries.html">Libraries</a>
+				</li>
+
+				<li>
+					<a href="#">Initialization</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-init.html">/sys/init</a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#">Seal/Unseal</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-seal-status.html">/sys/seal-status</a>
+						</li>
+
+						<li>
+							<a href="/docs/http/sys-seal.html">/sys/seal</a>
+						</li>
+
+						<li>
+							<a href="/docs/http/sys-unseal.html">/sys/unseal</a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#">Secret Mounts</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-mounts.html">/sys/mounts</a>
+						</li>
+
+						<li>
+							<a href="/docs/http/sys-remount.html">/sys/remount</a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#">Auth & ACLs</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-auth.html">/sys/auth</a>
+						</li>
+
+						<li>
+							<a href="/docs/http/sys-policy.html">/sys/policy</a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#">Audit Backends</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-audit.html">/sys/audit</a>
+						</li>
+						<li>
+							<a href="/docs/http/sys-audit-hash.html">/sys/audit-hash</a>
+						</li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#">Leases</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-renew.html">/sys/renew</a>
+						</li>
+
+						<li>
+							<a href="/docs/http/sys-revoke.html">/sys/revoke</a>
+						</li>
+
+						<li>
+							<a href="/docs/http/sys-revoke-prefix.html">/sys/revoke-prefix</a>
+						</li>
+					</ul>
+                </li>
+
+                <li>
+					<a href="#">High Availability</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-leader.html">/sys/leader</a>
+						</li>
+					</ul>
+                </li>
+
+                <li>
+					<a href="#">Key Rotation</a>
+					<ul class="nav nav-visible">
+						<li>
+							<a href="/docs/http/sys-key-status.html">/sys/key-status</a>
+                        </li>
+
+						<li>
+							<a href="/docs/http/sys-rekey.html">/sys/rekey/</a>
+                        </li>
+
+						<li>
+							<a href="/docs/http/sys-rotate.html">/sys/rotate</a>
+						</li>
+					</ul>
+                </li>
+
+                <li class="active">
+					<a href="#">Debug</a>
+					<ul class="nav nav-visible">
+						<li class="active">
+							<a href="/docs/http/sys-raw.html">/sys/raw</a>
+                        </li>
+
+						<li>
+							<a href="/docs/http/sys-health.html">/sys/health</a>
+						</li>
+					</ul>
+                </li>
+
+                <hr>
+
+				<li>
+					<a href="/docs/secrets/index.html">Secret Backends</a>
+				</li>
+
+				<li>
+					<a href="/docs/auth/index.html">Auth Backends</a>
+                </li>
+
+				<li>
+					<a href="/docs/audit/index.html">Audit Backends</a>
+				</li>
+			</ul>
+		</div>
+
+		</div>  
+		<div id="main-content" class="col-sm-9 col-md-8 col-xs-12" role="main">
+			<div class="bs-docs-section">
+				
+	<div class="bs-api-section">
+	<h1>/sys/raw</h1>
+
+<h2>GET</h2>
+<dl>
+<p><dt>Description</dt>
+<dd>
+  Reads the value of the key at the given path. This is the raw path in the
+    storage backend and not the logical path that is exposed via the mount system.
+</dd></p>
+<p><dt>Method</dt>
+<dd>GET</dd></p>
+<p><dt>URL</dt>
+<dd><code>/sys/raw/&lt;path&gt;</code></dd></p>
+<p><dt>Parameters</dt>
+<dd>
+None
+</dd></p>
+<p><dt>Returns</dt>
+<dd></p>
+<pre class="highlight javascript"><code><span class="p">{</span>
+  <span class="s2">"value"</span><span class="err">:</span> <span class="s2">"{'foo':'bar'}"</span>
+<span class="p">}</span>
+</code></pre>
+<p></dd></p>
+</dl>
+<h2>PUT</h2>
+<dl>
+<p><dt>Description</dt>
+<dd>
+  Update the value of the key at the given path. This is the raw path in the
+    storage backend and not the logical path that is exposed via the mount system.
+</dd></p>
+<p><dt>Method</dt>
+<dd>PUT</dd></p>
+<p><dt>URL</dt>
+<dd><code>/sys/raw/&lt;path&gt;</code></dd></p>
+<p><dt>Parameters</dt>
+<dd>
+<ul>
+  <li>
+    <span class="param">value</span>
+    <span class="param-flags">required</span>
+    The value of the key.
+  </li>
+</ul>
+</dd></p>
+<p><dt>Returns</dt>
+<dd><code>204</code> response code.
+</dd></p>
+</dl>
+<h2>DELETE</h2>
+<dl>
+<p><dt>Description</dt>
+<dd>
+Delete the key with given path. This is the raw path in the
+    storage backend and not the logical path that is exposed via the mount system.
+</dd></p>
+<p><dt>Method</dt>
+<dd>DELETE</dd></p>
+<p><dt>URL</dt>
+<dd><code>/sys/raw/&lt;path&gt;</code></dd></p>
+<p><dt>Parameters</dt>
+<dd>None
+</dd></p>
+<p><dt>Returns</dt>
+<dd><code>204</code> response code.
+</dd></p>
+</dl>
+	</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<script type="text/x-handlebars" data-template-name="demo">
+{{outlet}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="demo/step">
+
+<div class="instruction-wrapper">
+    <div class="instruction">
+        <p>
+        <strong>{{model.humanName}}</strong>
+        </p>
+
+        {{partial model.instructionTemplate}}
+    </div>
+</div>
+
+<span class="close-terminal" {{action "close"}}>X</span>
+
+<div {{bind-attr class=":demo-terminal fullscreen:fullscreen" }}>
+    <div class="log">{{renderedLogs}}</div>
+
+    <form {{action "submitText" on="submit"}}>
+        {{#unless isLoading}}${{/unless}} {{input value=currentText class="shell" spellcheck="false"}}
+    </form>
+
+    {{#if isLoading}}
+    <div class="loading-bar"></div>
+    {{/if}}
+</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="welcome">
+    <p>
+        This tutorial is great for getting familiar with the command line
+         interface to Vault. As soon as you opened this terminal, you are connected to a real in-memory Vault server.
+        Any commands you enter will work as they would with Vault normally, but leaving this page
+        will end the session.
+    </p>
+    <p>
+     Please note that this is running in a shared environment, so avoid setting any real secrets.
+    </p>
+    <p>
+        <strong>Use the command "next" to move forward</strong>.
+    </p>
+    <p>This will work throughout
+        the tutorial, along with "previous" to go back a step.
+    </p>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="steps">
+    <p>
+        This tutorial will cover the following steps:
+    </p>
+    <ul>
+        <li>- Initializing and unsealing your Vault</li>
+        <li>- Authorizing your requests to Vault</li>
+        <li>- Reading and writing secrets</li>
+        <li>- Sealing your Vault</li>
+    </ul>
+    <p>
+        <strong>Again, use "next" to move to the first step – initializing your Vault</strong>.
+    </p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="init">
+    <p>
+        To get started, we need to initialize an instance of Vault for you
+        to work with.
+    </p>
+    <p>
+        While initializing, you can configure the seal behavior
+        of Vault.
+        </p>
+    <p>
+        Initialize Vault now, with 1 unseal key for simplicity, using the command:
+    </p>
+    <p>
+        <code>vault init -key-shares=1 -key-threshold=1</code>
+    </p>
+    <p>
+        You'll notice Vault prints out several keys here. Don't clear your terminal,
+        as these are needed in the next few steps.
+    </p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="unseal">
+    <p>
+        When a Vault server is started, it starts in a sealed state.
+         In this state, Vault is configured to know where and how to access the
+         physical storage, but doesn't know how to decrypt any of it.
+    </p>
+    <p>
+        Vault encrypts data with an encryption key. This key is encrypted with the "master key", which
+        isn't stored. Decrypting the master key requires a threshold of shards. In this example,
+        we use one shard to decrypt this master key.
+    </p>
+    <p>
+        Unseal the Vault:
+    </p>
+    <p>
+        <code>vault unseal &lt;key 1&gt;</code>
+    </p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="auth">
+    <p>
+        Before performing any operation with Vault, the
+        connecting client must be authenticated. Authentication is
+        the process of verifying a person or machine is who they say
+        they are and assigning an identity to them. This identity is then
+        used when making requests with Vault.
+    </p>
+    <p>
+        For simplicity, we'll use the root token we generated on init in Step 2. This
+        output should be available in the scrollback.
+    </p>
+    <p>
+        Authorize with a client token:
+    </p>
+    <p>
+        <code>vault auth &lt;root token&gt;</code>
+    </p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="secrets">
+    <p>
+        Now that Vault has been set-up, we can start reading and writing secrets
+        with the default mounted secret backend. Secrets written to Vault
+        are encrypted and then written to the backend storage.
+        The backend storage mechanism never sees the unencrypted
+        value and doesn't have the means necessary to decrypt
+        it without Vault.
+    </p>
+    <p>
+        <code>vault write secret/hello value=world</code>
+    </p>
+    <p>
+        Of course, you can then read this data too:
+    </p>
+    <p>
+        <code>vault read secret/hello</code>
+    </p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="seal">
+    <p>
+        There is also an API to seal the Vault. This will throw
+        away the encryption key and require another unseal process
+        to restore it. Sealing only requires a single operator
+        with root privileges. This is typically part of a rare "break glass
+        procedure".
+    </p>
+    <p>
+        This way, if there is a detected intrusion, the Vault data can be locked
+        quickly to try to minimize damages. It can't be accessed again
+        without access to the master key shards.
+    </p>
+    <p>
+        <code>vault seal</code>
+    </p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="finish">
+    <p>
+        Thanks for trying out the Vault CLI. If you want to keep playing with
+        commands, use "fu" to go fullscreen.
+    </p>
+    <p>
+        Note that the Vault CLI uses the HTTP API, which gives you full access to Vault. Every aspect
+        of Vault can be controlled via this API.
+    </p>
+    <p>
+        We recommend reading through the <a href="/intro/index.html">intro guide</a> next, which will
+        provide more background information, use cases and examples.
+    </p>
+</script>
+
+  <div id="footer" class="navigation">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-xs-12">
+            <div class="edit-page-link"><a href="https://www.github.com/hashicorp/vault/blob/master/website/source/docs/http/sys-raw.html.md">Edit this page</a></div>
+          <div class="footer-links">
+            <ul class="main-links nav navbar-nav">
+              <li><a href="/intro/index.html">Intro</a></li>
+              <li><a href="/docs/index.html">Docs</a></li>
+              <li><a href="/community.html">Community</a></li>
+              <li><a href="/security.html">Security</a></li>
+            </ul>
+            <ul class="external-links nav navbar-nav">
+              <li class="first download">
+                <a href="/downloads.html"><svg id="svg-download" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 28 28" xml:space="preserve" enable-background="new 0 0 28 28">
+  <path d="M28 0H0v28h28V0zM13.8 22.9L7 17.3l2-2.4 3.2 2.6V7h3.2v10.5l3.2-2.6 2 2.4L13.8 22.9z"/>
+</svg>
+Download</a>
+              </li>
+              <li class="github">
+                <a href="https://github.com/hashicorp/vault"><svg id="svg-download" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 28 28" xml:space="preserve" enable-background="new 0 0 28 28">
+  <path d="M28 0H0v28h11.4c0 0 0-1.3 0-2.4C7.7 26.4 7 23.9 7 23.9 6.4 22.4 5.5 22 5.5 22c-1.2-0.8 0.1-0.8 0.1-0.8 1.3 0.1 2 1.4 2 1.4 1.2 2 3 1.4 3.8 1.1 0.1-0.8 0.5-1.4 0.9-1.8 -2.9-0.3-6-1.5-6-6.5 0-1.4 0.5-2.6 1.3-3.5C7.5 11.5 7 10.2 7.8 8.4c0 0 1.1-0.4 3.6 1.3 1-0.3 2.2-0.4 3.3-0.4 1.1 0 2.2 0.2 3.3 0.4 2.5-1.7 3.6-1.3 3.6-1.3 0.7 1.8 0.3 3.1 0.1 3.5 0.8 0.9 1.3 2.1 1.3 3.5 0 5-3.1 6.1-6 6.5 0.5 0.4 0.9 1.2 0.9 2.4 0 1.8 0 3.7 0 3.7H28V0z"/>
+</svg>
+GitHub</a>
+              </li>
+            </ul>
+          </  div>
+          <div class="footer-hashi pull-right">
+            <div class="">
+              <a class="hashicorp-project" href="https://www.hashicorp.com">
+                <span class="project-text">A </span>
+                <svg class="svg-by" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="-1337.4 1130.1 73.8 16.1" xml:space="preserve" enable-background="new -1337.4 1130.1 73.8 16.1">
+  <g>
+    <path d="M-1329.6 1142.4v-4.9h-4.3v4.9h-2.2v-11.6h2.2v4.8h4.3v-4.8h2.2v11.6H-1329.6z"/>
+    <path d="M-1318.8 1142.4h-1.7l-0.2-0.6c-0.8 0.5-1.7 0.8-2.5 0.8 -1.6 0-2.2-1.1-2.2-2.5 0-1.7 0.8-2.4 2.5-2.4h2v-0.9c0-0.9-0.3-1.3-1.6-1.3 -0.8 0-1.6 0.1-2.4 0.3l-0.3-1.6c0.8-0.2 2-0.4 2.9-0.4 2.7 0 3.5 0.9 3.5 3.1V1142.4zM-1321 1139.2h-1.6c-0.7 0-0.9 0.2-0.9 0.8 0 0.6 0.2 0.9 0.9 0.9 0.6 0 1.2-0.2 1.6-0.4V1139.2z"/>
+    <path d="M-1314.2 1142.6c-0.9 0-2.1-0.2-2.9-0.5l0.3-1.6c0.7 0.2 1.7 0.4 2.5 0.4 0.9 0 1.1-0.2 1.1-0.9 0-0.5-0.1-0.8-1.5-1.1 -2.1-0.5-2.3-1-2.3-2.7s0.8-2.5 3.2-2.5c0.8 0 1.8 0.1 2.5 0.3l-0.2 1.7c-0.6-0.1-1.7-0.2-2.3-0.2 -0.9 0-1.1 0.2-1.1 0.7 0 0.7 0.1 0.7 1.2 1 2.4 0.6 2.6 0.9 2.6 2.7C-1311.1 1141.6-1311.6 1142.6-1314.2 1142.6z"/>
+    <path d="M-1304.3 1142.4v-5.9c0-0.5-0.2-0.7-0.7-0.7s-1.4 0.3-2.2 0.7v5.9h-2.1v-12l2.1-0.3v4.4c0.9-0.5 2.2-0.8 3.1-0.8 1.4 0 1.9 1 1.9 2.5v6.2H-1304.3L-1304.3 1142.4z"/>
+    <path d="M-1300.1 1132.7v-2.5h2.1v2.5H-1300.1zM-1300.1 1142.4v-8.5h2.1v8.5H-1300.1z"/>
+    <path d="M-1296 1134c0-2.1 1.2-3.4 4.1-3.4 1.1 0 2.2 0.1 3.2 0.4l-0.2 1.9c-0.9-0.2-2-0.3-2.8-0.3 -1.5 0-2 0.5-2 1.8v4.5c0 1.2 0.5 1.8 2 1.8 0.8 0 1.9-0.1 2.8-0.3l0.2 1.9c-1 0.2-2.1 0.4-3.2 0.4 -2.9 0-4.1-1.2-4.1-3.4V1134z"/>
+    <path d="M-1283.8 1142.6c-2.9 0-3.7-1.6-3.7-3.3v-2.1c0-1.7 0.8-3.4 3.7-3.4s3.7 1.6 3.7 3.4v2.1C-1280.1 1141-1280.9 1142.6-1283.8 1142.6zM-1283.8 1135.6c-1.1 0-1.6 0.5-1.6 1.5v2.3c0 1 0.4 1.5 1.6 1.5 1.1 0 1.6-0.5 1.6-1.5v-2.4C-1282.2 1136.1-1282.7 1135.6-1283.8 1135.6z"/>
+    <path d="M-1273.9 1135.7c-0.8 0.4-1.5 0.8-2.3 1.2v5.5h-2.1v-8.5h1.8l0.1 0.9c0.5-0.3 1.5-0.9 2.2-1.1L-1273.9 1135.7z"/>
+    <path d="M-1265.6 1139.6c0 1.9-0.8 3-2.8 3 -0.8 0-1.6-0.1-2.3-0.2v3.5l-2.1 0.3V1134h1.7l0.2 0.7c0.8-0.5 1.6-0.9 2.7-0.9 1.7 0 2.6 1 2.6 2.9V1139.6L-1265.6 1139.6zM-1270.6 1140.5c0.6 0.1 1.3 0.2 1.9 0.2 0.8 0 1.1-0.4 1.1-1.1v-3c0-0.7-0.3-1.1-1-1.1 -0.7 0-1.4 0.3-1.9 0.8L-1270.6 1140.5 -1270.6 1140.5z"/>
+  </g>
+  <g class="svg-bg-line">
+    <rect x="-1268" y="1145" width="4.3" height="1"/>
+    <rect x="-1338" y="1145" width="63" height="1"/>
+  </g>
+</svg>
+
+                <span class="project-text">Project</span>
+                <svg class="svg-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Isolation_Mode" x="0px" y="0px" viewBox="-344 273 29.4 32" xml:space="preserve" enable-background="new -344 273 29.4 32">
+  <g>
+    <polygon points="-326.2 296.7 -321.4 294.1 -321.4 275.8 -326.2 273 -326.2 286.6 -332.4 286.6 -332.4 281.3 -337.3 283.9 -337.3 302.2 -332.4 305 -332.4 291.4 -326.2 291.4 "/>
+    <polygon points="-319.1 277.1 -319.1 295.6 -326.2 299.5 -326.2 305 -314.6 298.3 -314.6 279.7 "/>
+    <polygon points="-332.4 273 -344 279.7 -344 298.3 -339.5 300.9 -339.5 282.4 -332.4 278.6 "/>
+  </g>
+</svg>
+
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-62364009-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script type="text/javascript">
+adroll_adv_id = "6QAAFJDIWBG3DJBDRJ7BEX";
+adroll_pix_id = "PYT5HSNKNRDS7LMUR5B6YG";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+   __adroll_loaded=true;
+   var scr = document.createElement("script");
+   var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+   scr.setAttribute('async', 'true');
+   scr.type = "text/javascript";
+   scr.src = host + "/j/roundtrip.js";
+   ((document.getElementsByTagName('head') || [null])[0] ||
+    document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+   if(oldonload){oldonload()}};
+}());
+</script>
+
+<script src="/assets/javascripts/application-201f4635.js"></script>
+
+</body>
+</html>
