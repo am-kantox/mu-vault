@@ -82,7 +82,9 @@ defmodule MuVault.Utils.VaultDocParser do
       meth = String.downcase(desc.method)
       method_name = :"#{meth}#{func}"
       case meth do
-        "get" -> def unquote(method_name)(), do: unquote(:"#{meth}")(unquote(func_unescaped))
+        "get" ->
+          def unquote(method_name)(connector), do: unquote(:"#{meth}")(connector, unquote(func_unescaped))
+          def unquote(method_name)(), do: unquote(:"#{meth}")(unquote(func_unescaped))
         _ -> :not_implemented # requires more precise parsing of parameters
       end
     end
