@@ -36,6 +36,7 @@ defmodule MuVault.Config do
 
   config :mu_vault,
     version: @version,
+    vault_html_version: "20151230", # [AM] Change this to the most up-to-date version :: NB could break build
     user_agent: @user_agent,
     token_header: "X-Vault-Token",
     location_header: "location",
