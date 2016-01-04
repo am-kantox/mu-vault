@@ -11,6 +11,9 @@ defmodule MuVault.Request do
     ]
   end
 
+  @paramless [ :get, :delete ]
+  @paramfull [ :put, :post ] # :patch is not used
+
 ################################################################################
 
   # iex> {:ok, result} = :httpc.request(:get, {'http://127.0.0.1:8200/v1/secret/foo',
@@ -20,16 +23,18 @@ defmodule MuVault.Request do
   #   [{'date', 'Mon, 28 Dec 2015 12:59:10 GMT'}, {'content-length', '110'},
   #    {'content-type', 'application/json'}],
   #   '{"lease_id":"","renewable":false,"lease_duration":2592000,"data":{"value":"bar"},"warnings":null,"auth":null}\n'}}
-  @doc "Generic get handler for requesting data from vault"
-  def get(connector, key) do
-    [address, token] = address_token(connector, key)
-    IO.inspect address
-    :httpc.request(:get, {address, [{'X-Vault-Token', token}]}, [], [])
-  end
+  for term <- @paramless do
+    @doc "Generic paramless handler for requesting data from vault (custom connector)"
+    def unquote(term)(connector, key) do
+      [address, token] = address_token(connector, key)
+      :httpc.request(unquote(term), {address, [{'X-Vault-Token', token}]}, [], [])
+    end
 
-  def get(key) do
-    connector = %Connector{ address: "http://127.0.0.1:8200" }
-    get(connector, key)
+    @doc "Generic paramless handler for requesting data from vault (default connector)"
+    def unquote(term)(key) do
+      connector = %Connector{ address: "http://127.0.0.1:8200" }
+      unquote(term)(connector, key)
+    end
   end
 
 ################################################################################
@@ -40,48 +45,19 @@ defmodule MuVault.Request do
   #  {{'HTTP/1.1', 204, 'No Content'},
   #   [{'date', 'Mon, 28 Dec 2015 12:59:05 GMT'},
   #    {'content-type', 'application/json'}], []}}
-  # [AM FIXME] accept map
-  @doc "Generic put handler for storing data in vault"
-  def put(connector, key, map) do
-    [address, token] = address_token(connector, key)
-    :httpc.request(:put, {address, [{'X-Vault-Token', token}], 'application/json', map}, [], [])
-  end
+  for term <- @paramfull do
+    @doc "Generic paramfull handler for storing data in vault (custom connector)"
+    def unquote(term)(connector, key, map) do
+      [address, token] = address_token(connector, key)
+      { :ok, encoded } = JSON.encode(map)
+      :httpc.request(unquote(term), {address, [{'X-Vault-Token', token}], 'application/json', encoded}, [], [])
+    end
 
-  def put(key, map) do
-    connector = %Connector{ address: "http://127.0.0.1:8200" }
-    put(connector, key, map)
-  end
-
-################################################################################
-
-  # iex> {:ok, result} = :httpc.request(:post, {'http://127.0.0.1:8200/v1/secret/foo',
-  #                      [{'X-Vault-Token', 'b759a13b-5129-c66f-22ae-fa9cdadf7969'}], 'application/json', '{"value": "bar"}'}, [], [])
-  # {:ok,
-  #  {{'HTTP/1.1', 204, 'No Content'},
-  #   [{'date', 'Mon, 28 Dec 2015 12:59:05 GMT'},
-  #    {'content-type', 'application/json'}], []}}
-  # [AM FIXME] accept map
-  @doc "Generic post handler for storing data in vault"
-  def post(connector, key, map) do
-    [address, token] = address_token(connector, key)
-    :httpc.request(:post, {address, [{'X-Vault-Token', token}], 'application/json', map}, [], [])
-  end
-
-  def post(key, map) do
-    connector = %Connector{ address: "http://127.0.0.1:8200" }
-    post(connector, key, map)
-  end
-
-################################################################################
-
-  def delete(connector, key) do
-    [address, token] = address_token(connector, key)
-    :httpc.request(:delete, {address, [{'X-Vault-Token', token}]}, [], [])
-  end
-
-  def delete(key) do
-    connector = %Connector{ address: "http://127.0.0.1:8200" }
-    delete(connector, key)
+    @doc "Generic paramfull handler for storing data in vault (default connector)"
+    def unquote(term)(key, map) do
+      connector = %Connector{ address: "http://127.0.0.1:8200" }
+      unquote(term)(connector, key, map)
+    end
   end
 
 end

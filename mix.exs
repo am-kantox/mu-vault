@@ -17,7 +17,7 @@ defmodule MuVault.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [
-      applications: [:logger, :httpotion]
+      applications: [:logger, :httpoison]
     ]
   end
 
@@ -35,6 +35,8 @@ defmodule MuVault.Mixfile do
       { :floki, "~> 0.7" },
       { :ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2" },
       { :httpotion, "~> 2.1.0" },
+      { :httpoison, "~> 0.8.0" },
+      { :json,   "~> 0.3.0" },
 
       { :credo, "~> 0.2", only: [:dev, :test] },
     ]

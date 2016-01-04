@@ -9,7 +9,7 @@ defmodule MuVault.Connector do
   #   USER_ID = get_mac_address ($1.gsub!(':','-') if `#{'ifconfig'}`=~/ether.*?(([A-F0-9]{2}:){5}[A-F0-9]{2})/im)
   #   config.token = Vault.auth.app_id(APP_ID, USER_ID).auth[:client_token]
   # end
-  
+
   data =
     # Get all functions with 0 arity and the respective default
     for {k, 0} <- Defaults.__info__(:functions) do

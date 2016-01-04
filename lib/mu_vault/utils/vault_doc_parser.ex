@@ -1,13 +1,16 @@
 defmodule MuVault.Utils.VaultDocParser do
+  @moduledoc "Internal helper to build Vault API by the documentation provided by Vault"
+
   defmodule MuMethod do
+    @moduledoc "Struct to describe internal Vault API methods"
     defstruct [:description, :method, :parameters, :returns]
   end
 
   defmodule MuFloki do
+    @moduledoc "Vault website parser based on Floki (internal use only)"
 
     def parse(file) do
-      File.read!(file)
-      |> parse_html
+      parse_html File.read!(file)
     end
 
     # FIXME parse parameters!!!
@@ -66,7 +69,7 @@ defmodule MuVault.Utils.VaultDocParser do
   @external_resource api_description_path = Path.join [File.cwd!, "data", Application.fetch_env!(:mu_vault, :vault_html_version)]
   { :ok, files } = api_description_path |> File.ls # [AM] UNDERSTAND how to make files private here (@files)
   @methods (for (file <- files) do
-    MuVault.Utils.VaultDocParser.MuFloki.parse Path.join(api_description_path, file)
+    MuFloki.parse Path.join(api_description_path, file)
   end)
 
   import MuVault.Request
@@ -75,7 +78,7 @@ defmodule MuVault.Utils.VaultDocParser do
     # {"/sys/key-status",
     #   [%MuVault.Utils.VaultDocParser.MuMethod{description: "Returns information about the current encryption key used by Vault.",
     #     method: "GET", parameters: "None",
-    #     returns: "The \"term\" parameter is the sequential key number, and \"install_time\" is the time that\nencryption key was installed."}]}
+    #     returns: "The \"term\" parameter is the sequential key number, and ..."}]}
     func = func_unescaped |> String.replace(~r/\W+/, "_")
 
     for desc <- descs do
@@ -85,6 +88,15 @@ defmodule MuVault.Utils.VaultDocParser do
         "get" ->
           def unquote(method_name)(connector), do: unquote(:"#{meth}")(connector, unquote(func_unescaped))
           def unquote(method_name)(), do: unquote(:"#{meth}")(unquote(func_unescaped))
+        "delete" ->
+          def unquote(method_name)(connector), do: unquote(:"#{meth}")(connector, unquote(func_unescaped))
+          def unquote(method_name)(), do: unquote(:"#{meth}")(unquote(func_unescaped))
+        "post" ->
+          def unquote(method_name)(connector, parameters), do: unquote(:"#{meth}")(connector, unquote(func_unescaped), parameters)
+          def unquote(method_name)(parameters), do: unquote(:"#{meth}")(unquote(func_unescaped), parameters)
+        "put" ->
+          def unquote(method_name)(connector, parameters), do: unquote(:"#{meth}")(connector, unquote(func_unescaped), parameters)
+          def unquote(method_name)(parameters), do: unquote(:"#{meth}")(unquote(func_unescaped), parameters)
         _ -> :not_implemented # requires more precise parsing of parameters
       end
     end
