@@ -3,42 +3,42 @@ defmodule MuVault.Defaults do
   @vsn 1
 
   ##############################################################################
-  #### MACROS
+  #### PRIVATES
   ##############################################################################
 
-  @doc "The default vault address"
-  defmacro vault_address do
+  # @doc "The default vault address"
+  defp vault_address do
     "https://127.0.0.1:8200"
   end
 
-  @doc "The path to the vault token on disk"
-  defmacro vault_disk_token do
+  # @doc "The path to the vault token on disk"
+  defp vault_disk_token do
     System.user_home |> Path.join(".vault-token")
   end
 
-  @doc "The list of SSL ciphers to allow. You should not change this value unless you absolutely know what you are doing!"
-  defmacro ssl_ciphers_allowed do
+  # @doc "The list of SSL ciphers to allow. You should not change this value unless you absolutely know what you are doing!"
+  defp ssl_ciphers_allowed do
     "TLSv1.2:!aNULL:!eNULL"
-  end
-
-  @doc "The default number of attempts"
-  defmacro retry_attempts do
-    3
-  end
-
-  @doc "The default backoff interval"
-  defmacro retry_base do
-    0.05
-  end
-
-  @doc "The maximum amount of time for a single exponential backoff to sleep"
-  defmacro retry_max_wait do
-    2.0
   end
 
   ##############################################################################
   #### FUNCTIONS
   ##############################################################################
+
+  @doc "The default number of attempts"
+  def retry_attempts do
+    3
+  end
+
+  @doc "The default backoff interval"
+  def retry_base do
+    0.05
+  end
+
+  @doc "The maximum amount of time for a single exponential backoff to sleep"
+  def retry_max_wait do
+    2.0
+  end
 
   @doc "The address to communicate with Vault"
   def address do
